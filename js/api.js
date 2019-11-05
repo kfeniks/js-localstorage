@@ -1,7 +1,7 @@
 //'use strict';
 var urlApi = '/api/map';
 
-async function sendRequest(requestType, requestUrl, myData, methodName, params) {
+async function sendRequest(requestType, requestUrl, myData, methodName, params, callback = null) {
     $.ajax({
         type: requestType,
         url: requestUrl,
@@ -21,6 +21,10 @@ async function sendRequest(requestType, requestUrl, myData, methodName, params) 
                 } else {
                     console.log('Invalid ' + requestUrl + '!');
                 }
+            }
+
+            if (callback) {
+                callback();
             }
         }
     });
@@ -148,9 +152,9 @@ function getBody(coord)
     sendRequest('GET', urlApi + '/add-body', data, 'countrBorders', null);
 }
 
-function setConfig()
+function setConfig(callback = null)
 {
-    sendRequest('GET', urlApi + '/config', null, 'getConfigsGame', 'new');
+    sendRequest('GET', urlApi + '/config', null, 'getConfigsGame', 'new', callback);
 }
 
 function getConfigsGame(data, params)
